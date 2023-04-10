@@ -4,10 +4,21 @@ import './index.css';
 import App from './Containers/App';
 import reportWebVitals from './reportWebVitals';
 import 'tachyons';
+import {Provider, connect} from 'react-redux';
+import { legacy_createStore as createStore, applyMiddleware, combineReducers} from 'redux'
+import { createLogger } from 'redux-logger';
+import { searchRobots, requestRobots } from './reducers';
+import thunkMiddleware from 'redux-thunk';
+
+const logger = createLogger();
+const rootReducer = combineReducers({ searchRobots, requestRobots })
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <App />
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
